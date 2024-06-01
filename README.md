@@ -36,4 +36,20 @@ For the strategy we can use the next components:
 ## **Part 4 & 5: Theoretical Implementation**
 Using the AWS services identified, outline the architecture for the web application. Describe how each component interacts with others, focusing on the flow of data and control between services. This description should detail the role of each service in the architecture, ensuring a clear understanding of their interactions and dependencies.
 
+This is the description of every component and their interactions:
+ * DNS: transforms the domain name service to an IP address.
+ * Cloud Front: Stores all the front application this connects to a firewall and at the same time we will connect to the first load balancer.
+ * Firewall: between CloudFront and DNS, to prevent unnecesary network traffic.
+ * AWS cloud, is by itself defending against ddos attack
+ * AWS VPC: this ensures security and isoletion on every deep layer on our application.
+ * ECS Web servers: This are the services that will process all the http request gathered from the front. This two (Or more) will be connected to the next layer of ECS
+ * ECS App servers: In charge of processing the bussiness rules, querying to database, process information and return them to Web servers.
+ * DynamoDB: works as a fast querying database, this data will be in dynamo only for 6 months, after that, lambda will migrate old information to an instance of S3. In case that the data is not in our DynamoDB, we will ask to lambda to look after the information on S3.
+ * S3: Gathers all the informations that is not used in at least, 6 months, it will keep the security and we will havve the information, but not in our principal database.
+
+
+* **Discuss how the designed IAM policies contribute to overall security.**
+  The roles that I design ensures the security because only the personal of DevOps can create delete or administrate the infraestructure of the system. And only one person, that is the admin, can give and retrieve this roles.
+  The developers can only see the ec2 instances, to see their application, logs, information about executions, and just that, and db admins can modify the databases but only in lower environments, the higher environments are only for querying.
+  
 
